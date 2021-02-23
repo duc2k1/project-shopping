@@ -10,7 +10,6 @@ exports.forgetPass = asyncMiddleware(async (req, res, next) => {
   const { email } = req.body;
   const isExistEmail = await User.findOne({ email });
   if (isExistEmail) {
-    //
     const option = {
       service: "gmail",
       auth: {
@@ -39,7 +38,6 @@ exports.forgetPass = asyncMiddleware(async (req, res, next) => {
       }
     });
     //cập nhật mật khẩu user by email
-    console.log(req.body);
     const updateUser = await User.findOneAndUpdate(
       { email: email },
       { password: pass },

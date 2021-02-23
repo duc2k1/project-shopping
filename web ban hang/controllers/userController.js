@@ -8,7 +8,6 @@ const ErrorResponse = require("../models/ErrorResponse");
 //thay doi isActive dua vao email
 exports.activeUserByName = asyncMiddleware(async (req, res, next) => {
   const { name } = req.body;
-  console.log(req.body);
   const update = await User.findOneAndUpdate(
     { name: name },
     { isActive: true },
@@ -18,12 +17,6 @@ exports.activeUserByName = asyncMiddleware(async (req, res, next) => {
   );
   if (!update) return next(new ErrorResponse(400, "can not update"));
   res.status(200).json(new SuccessResponse(200, update));
-  // const { email } = req.body;
-  // const updateUser = await User.findOneAndUpdate({ email: email }, req.body, {
-  //   new: true,
-  // });
-  // if (!updateUser) return next(new ErrorResponse(400, "can not update"));
-  // res.status(200).json(new SuccessResponse(200, updateUser));
 });
 //--
 exports.getAllUsers = asyncMiddleware(async (req, res, next) => {
@@ -38,7 +31,6 @@ exports.getAllUsers = asyncMiddleware(async (req, res, next) => {
 });
 //---------------------------
 exports.getUserById = asyncMiddleware(async (req, res, next) => {
-  console.log(req.params.userId);
   const { userId } = req.params;
   if (!userId.trim()) return next(new ErrorResponse(400, "userId is empty"));
   const user = await User.findById(userId)
@@ -58,11 +50,9 @@ exports.deleteUserById = asyncMiddleware(async (req, res, next) => {
 exports.updateUserById = asyncMiddleware(async (req, res, next) => {
   const { userId } = req.params;
   if (!userId.trim()) return next(new ErrorResponse(400, "userId is empty"));
-
   const updateUser = await User.findOneAndUpdate({ _id: userId }, req.body, {
     new: true,
   });
-  console.log("ok");
   if (!updateUser) return next(new ErrorResponse(400, "can not update"));
   res.status(200).json(new SuccessResponse(200, updateUser));
 });

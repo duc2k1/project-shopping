@@ -12,7 +12,6 @@ exports.baseAuth = async (req, res, next) => {
   if (
     `${process.env.BASEAUTH_USER}:${process.env.BASEAUTH_PASSWORD}` === decode
   ) {
-    console.log("base");
     next();
   } else {
     return next(new ErrorResponse(401, "base token is invalid"));

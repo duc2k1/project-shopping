@@ -18,7 +18,6 @@ class ConnectMongo {
       this.gfs = new mongoose.mongo.GridFSBucket(conn.db, {
         bucketName: process.env.MONGO_BUCKET,
       });
-      console.log(this.gfs);
     });
   }
 }
