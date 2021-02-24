@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 //--
-const DanhGiaSchema = new Schema({
+const FeedBackSchema = new Schema({
   idUser: String,
   idProduct: String,
-  feedBack: String,
+  feedBackOfUser: String,
   star: Number,
 });
-module.exports = mongoose.model("DanhGia", DanhGiaSchema);
+module.exports = mongoose.model("FeedBack", FeedBackSchema);

@@ -40,9 +40,6 @@ UserSchema.virtual("role_detail", {
   localField: "role",
   foreignField: "role_name",
   justOne: true,
-  // options: {
-  //   $project: { 'role_detail.role_name:1', role_desc: 1 }
-  // }
 });
 UserSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(12);

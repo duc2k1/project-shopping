@@ -14,14 +14,14 @@ exports.addItemCart = asyncMiddleware(async (req, res, next) => {
 });
 exports.getCartByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;
-  const cart = await Cart.find({ idUser: idUser }).catch(
+  const cart = await Cart.find({ idUser }).catch(
     (err) => new ErrorResponse(404, "user is not found")
   );
   if (cart) res.status(200).json(new SuccessResponse(200, cart));
 });
 exports.getTotalCountByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;
-  const cart = await Cart.find({ idUser: idUser }).catch(
+  const cart = await Cart.find({ idUser }).catch(
     (err) => new ErrorResponse(404, "user is not found")
   );
   let sum = 0;
@@ -35,7 +35,7 @@ exports.getTotalCountByIdUser = asyncMiddleware(async (req, res, next) => {
 exports.updateCartByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;
   if (!idUser.trim()) return next(new ErrorResponse(400, "idUser is empty"));
-  const updateCart = await Cart.findOneAndUpdate({ idUser: idUser }, req.body, {
+  const updateCart = await Cart.findOneAndUpdate({ idUser }, req.body, {
     new: true,
   });
   if (!updateCart) return next(new ErrorResponse(400, "can not update"));
@@ -45,7 +45,7 @@ exports.updateCartByIdUser = asyncMiddleware(async (req, res, next) => {
 exports.deleteCartByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;
   if (!idUser.trim()) return next(new ErrorResponse(400, "idUser is empty"));
-  const deleteCart = await Cart.findOneAndDelete({ idUser: idUser });
+  const deleteCart = await Cart.findOneAndDelete({ idUser });
   if (!deleteCart) return next(new ErrorResponse(400, "can not delete"));
   res.status(200).json(new SuccessResponse(200));
 });

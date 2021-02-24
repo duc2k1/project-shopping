@@ -10,10 +10,10 @@ const role = require("./route/api/role");
 const product = require("./route/api/product");
 const category = require("./route/api/category");
 const cart = require("./route/api/cart");
-const donHang = require("./route/api/donHang");
-const hoaDon = require("./route/api/hoaDon");
-const khuyenMai = require("./route/api/khuyenMai");
-const danhGia = require("./route/api/danhGia");
+const order = require("./route/api/order");
+const billing = require("./route/api/billing");
+const promotion = require("./route/api/promotion");
+const feedBack = require("./route/api/feedBack");
 const { errorMiddleware } = require("./middlewares/errorMiddleware");
 //----------------------------------
 ConnectMongo.getConnect();
@@ -32,10 +32,10 @@ app.use("/api/v1/role", role); //phân quyền
 app.use("/api/v1/product", product); //get product(by id ,all) , thêm product, xóa product
 app.use("/api/v1/category", category); //(loại)
 app.use("/api/v1/cart", cart); //(giỏ hàng)
-app.use("/api/v1/donHang", donHang);
-app.use("/api/v1/hoaDon", hoaDon);
-app.use("/api/v1/khuyenMai", khuyenMai);
-app.use("/api/v1/danhGia", danhGia);
+app.use("/api/v1/order", order);
+app.use("/api/v1/billing", billing);
+app.use("/api/v1/promotion", promotion);
+app.use("/api/v1/feedBack", feedBack);
 app.use(errorMiddleware);
 //---------------------------------------------------------------------------------------------------------------------------------------
 app.listen(PORT, () => {

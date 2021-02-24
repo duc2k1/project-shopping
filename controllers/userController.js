@@ -3,13 +3,44 @@ const User = require("../database/models/User");
 const SuccessResponse = require("../models/SuccessResponse");
 const ErrorResponse = require("../models/ErrorResponse");
 //---------------------------
+//UPDATE PASSWORD
+
+//old password, new password, confirm password
+exports.updatePassword = asyncMiddleware(async (req, res, next) => {
+  //bạn nhập mật khẩu cũ, mật khẩu mới, xác nhận mật khẩu mới
+  const { email, oldPassword, newPassword, confirmPassword } = req.body;
+  //so sánh 2 newPassword và confirmPassword
+  if (newPassword !== confirmPassword)
+    return next(
+      new ErrorResponse(400, "newPassword and confirmPassword must same")
+    );
+  //ss oldPass và password
+  const isExistEmail = await User.findOne({ email });
+  if (isExistEmail) {
+    const isMatchPassword = await User.comparePassword(
+      oldPassword /*chưa hash*/,
+      isExistEmail.password /*đã hash*/
+    );
+    if (isMatchPassword) {
+      const update = await User.findOneAndUpdate(
+        { email },
+        { password: newPassword },
+        {
+          new: true,
+        }
+      );
+      if (!update) return next(new ErrorResponse(400, "can not update"));
+      res.status(200).json(new SuccessResponse(200, update));
+    } else return next(new ErrorResponse(400, "oldPassword is incorrect!"));
+  } else return next(new ErrorResponse(400, "email is not found!"));
+});
 //ACTIVE
 //mac dinh isActive = false, user có role = admin co quyen active user khac
 //thay doi isActive dua vao email
 exports.activeUserByName = asyncMiddleware(async (req, res, next) => {
   const { name } = req.body;
   const update = await User.findOneAndUpdate(
-    { name: name },
+    { name },
     { isActive: true },
     {
       new: true,
