@@ -14,7 +14,7 @@ exports.forgetPass = asyncMiddleware(async (req, res, next) => {
       service: "gmail",
       auth: {
         user: "duc.phan622@gmail.com", // email hoặc username
-        pass: "duc0978051135", // password
+        pass: "*********", // password
       },
     };
     const transporter = nodemailer.createTransport(option);

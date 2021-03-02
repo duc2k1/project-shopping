@@ -4,8 +4,6 @@ const SuccessResponse = require("../models/SuccessResponse");
 const ErrorResponse = require("../models/ErrorResponse");
 //GIỎ HÀNG
 //id người mua, id sản phẩm, giá tiền,số lượng
-//output
-//id người mua, mảng sản phẩm, thành tiền
 exports.addItemCart = asyncMiddleware(async (req, res, next) => {
   const { idUser, idProduct, price, count } = req.body;
   const newCart = new Cart({ idUser, idProduct, price, count });

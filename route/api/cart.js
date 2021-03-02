@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const cartController = require("../../controllers/cartController");
+const { jwtAuth } = require("../../middlewares/jwtAuth");
 //-----------------------
 router
   .route("/")
-  .get(cartController.getCartByIdUser)
-  .post(cartController.addItemCart);
-router.get("/getTotal", cartController.getTotalCountByIdUser); //body
-router.post("/update", cartController.updateCartByIdUser); //body
-router.post("/delete", cartController.deleteCartByIdUser); //body
+  .get(jwtAuth, cartController.getCartByIdUser)
+  .post(jwtAuth, cartController.addItemCart);
+router.get("/getTotal", jwtAuth, cartController.getTotalCountByIdUser); //body
+router.post("/update", jwtAuth, cartController.updateCartByIdUser); //body
+router.post("/delete", jwtAuth, cartController.deleteCartByIdUser); //body
 //-----------------------
 module.exports = router;
