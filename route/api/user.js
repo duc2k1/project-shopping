@@ -15,8 +15,8 @@ router.post(
 router
   .route("/:userId")
   .get(userController.getUserById) //lấy thông tin user by id
-  .delete(userController.deleteUserById) //delete user by id
-  .patch(userController.updateUserById); //cập nhật user by id
+  .delete(jwtAuth, authorize("admin"), userController.deleteUserById) //delete user by id
+  .patch(jwtAuth, authorize("admin"), userController.updateUserById); //cập nhật user by id
 //---------------
 
 module.exports = router;
