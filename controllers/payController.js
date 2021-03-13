@@ -3,7 +3,7 @@ const paypal = require("paypal-rest-sdk");
 const { asyncMiddleware } = require("../middlewares/asyncMiddleware");
 //--
 exports.pay = asyncMiddleware(async (req, res, next) => {
-  const { price } = req.query;
+  const { price, name } = req.query;
   paypal.configure({
     mode: "sandbox", //sandbox or live
     client_id:
@@ -25,7 +25,7 @@ exports.pay = asyncMiddleware(async (req, res, next) => {
         item_list: {
           items: [
             {
-              name: "item",
+              name,
               sku: "item",
               price,
               currency: "USD",
