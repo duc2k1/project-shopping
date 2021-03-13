@@ -3,7 +3,7 @@ dotenv.config();
 const express = require("express");
 const { ConnectMongo } = require("./database/connectMongo");
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
 const auth = require("./route/api/auth");
 const user = require("./route/api/user");
 const role = require("./route/api/role");
@@ -14,6 +14,7 @@ const order = require("./route/api/order");
 const billing = require("./route/api/billing");
 const promotion = require("./route/api/promotion");
 const feedBack = require("./route/api/feedBack");
+const pay = require("./route/api/pay");
 const { errorMiddleware } = require("./middlewares/errorMiddleware");
 //----------------------------------
 ConnectMongo.getConnect();
@@ -25,6 +26,7 @@ app.use(function (req, res, next) {
   );
   next();
 });
+
 app.use(express.json());
 app.use("/api/v1/auth", auth); //dang ky,dang nhap, quen mk
 app.use("/api/v1/user", user); //active tk,...
@@ -36,10 +38,30 @@ app.use("/api/v1/order", order);
 app.use("/api/v1/billing", billing);
 app.use("/api/v1/promotion", promotion);
 app.use("/api/v1/feedBack", feedBack);
+app.use("/api/v1/pay", pay);
 app.use(errorMiddleware);
-//---------------------------------------------------------------------------------------------------------------------------------------
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+
+const server = app.listen(PORT, () => {
+  console.log(`server is running on localhost:${PORT}`);
 });
-//---------------------------------------------------------------------------------------------------------------------------------------
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    method: ["GET", "POST"],
+  },
+});
+const messages = [];
+io.on("connection", (socket) => {
+  socket.on("joined", (data) => {
+    io.emit("loadMsg", messages);
+  });
+  socket.on("sendMsg", (data) => {
+    messages.push(data);
+    io.emit("loadMsg", messages);
+  });
+  socket.on("disconnect", (reason) => {
+    console.log(reason);
+  });
+});
+//--
 //🌏 🌊	🌉 🌈
