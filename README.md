@@ -1,7 +1,8 @@
 #do-an-nodejs
 ## Features
 - Auth: Register (password used bcrypt), login, forget password
-- User: Update password, get all users, active user by name, get/delete/update by id
+- User: 
+ - Update password, get all users, active user by name, get/delete/update by id
 - Role: create new role, get all roles
 - Product: get all products, create new product, get/delete product by id
 - Category: get all categories, create new category, delete category by id
