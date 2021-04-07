@@ -44,24 +44,5 @@ app.use(errorMiddleware);
 const server = app.listen(PORT, () => {
   console.log(`server is running on localhost:${PORT}`);
 });
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    method: ["GET", "POST"],
-  },
-});
-const messages = [];
-io.on("connection", (socket) => {
-  socket.on("joined", (data) => {
-    io.emit("loadMsg", messages);
-  });
-  socket.on("sendMsg", (data) => {
-    messages.push(data);
-    io.emit("loadMsg", messages);
-  });
-  socket.on("disconnect", (reason) => {
-    console.log(reason);
-  });
-});
 //--
 //🌏 🌊	🌉 🌈

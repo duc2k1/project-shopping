@@ -5,7 +5,7 @@ const { authorize } = require("../../middlewares/authorize");
 const router = express.Router();
 //---------------
 router.post("/updatePassword", userController.updatePassword); //body
-router.get("/all", jwtAuth, authorize("admin"), userController.getAllUsers); //lấy toàn bộ thông tin user
+router.get("/all", userController.getAllUsers); //lấy toàn bộ thông tin user
 router.post(
   "/activeUserByName",
   jwtAuth,
