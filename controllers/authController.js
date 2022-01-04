@@ -1,11 +1,12 @@
+// Importing the required modules
 const { asyncMiddleware } = require("../middlewares/asyncMiddleware");
 const SuccessResponse = require("../models/SuccessResponse");
 const ErrorResponse = require("../models/ErrorResponse");
 const User = require("../database/models/User");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-//----------------------
-//QUÊN MẬT KHẨU
+
+// Forget password
 exports.forgetPass = asyncMiddleware(async (req, res, next) => {
   const { email } = req.body;
   const isExistEmail = await User.findOne({ email });
@@ -13,31 +14,34 @@ exports.forgetPass = asyncMiddleware(async (req, res, next) => {
     const option = {
       service: "gmail",
       auth: {
-        user: "duc.phan622@gmail.com", // email hoặc username
+        user: "duc.phan622@gmail.com", // email or userName
         pass: "*********", // password
       },
     };
     const transporter = nodemailer.createTransport(option);
-    //random mật khẩu tu tren 6 chu so
+
+    //random password > 6 characters
     const pass = (Math.floor(Math.random() * 1000000) + 100000).toString();
     const mail = {
-      from: "duc.phan622@gmail.com", // Địa chỉ email của người gửi
-      to: `${email}`, //email user
-      subject: "Thay đổi mật khẩu", // Tiêu đề mail
-      text: `Mật khẩu mới của bạn:${pass} `, // Nội dung mail dạng text
-      html: `<h1>Mật khẩu mới của bạn:${pass}</h1>`, // Nội dung mail dạng html
+      from: "duc.phan622@gmail.com", // Email address of sender
+      to: `${email}`, // Email address of receiver
+      subject: "Thay đổi mật khẩu", // Subject of the mail
+      text: `Mật khẩu mới của bạn:${pass} `, // Plain text body
+      html: `<h1>Mật khẩu mới của bạn:${pass}</h1>`, // HTML body
     };
-    //Tiến hành gửi email
+
+    // Send mail with defined transport object
     transporter.sendMail(mail, function (error, info) {
       if (error) {
-        // nếu có lỗi
+        // If have error
         console.log(error);
       } else {
-        //nếu thành công
+        // If success
         console.log("Email sent: " + info.response);
       }
     });
-    //cập nhật mật khẩu user by email
+
+    // Update password by email
     const updateUser = await User.findOneAndUpdate(
       { email: email },
       { password: pass },
@@ -45,18 +49,24 @@ exports.forgetPass = asyncMiddleware(async (req, res, next) => {
         new: true,
       }
     );
+
+    // If can't update password
     if (!updateUser) return next(new ErrorResponse(400, "can not update"));
+
+    // If success
     res.status(200).json(new SuccessResponse(200, updateUser));
   }
 });
-//ĐĂNG KÝ TÀI KHOẢN
+
+// Register account
 exports.register = asyncMiddleware(async (req, res, next) => {
   const { email, name, password } = req.body;
   const newUser = new User({ email, name, password });
   const saved_user = await newUser.save();
   res.status(201).json(new SuccessResponse(201, saved_user));
 });
-//ĐĂNG NHẬP
+
+// Login account
 exports.login = asyncMiddleware(async (req, res, next) => {
   const { email, password } = req.body;
   const isExistEmail = await User.findOne({ email });

@@ -2,6 +2,7 @@ const { asyncMiddleware } = require("../middlewares/asyncMiddleware");
 const Cart = require("../database/models/Cart");
 const SuccessResponse = require("../models/SuccessResponse");
 const ErrorResponse = require("../models/ErrorResponse");
+
 //GIỎ HÀNG
 //id người mua, id sản phẩm, giá tiền,số lượng
 exports.addItemCart = asyncMiddleware(async (req, res, next) => {
@@ -10,6 +11,8 @@ exports.addItemCart = asyncMiddleware(async (req, res, next) => {
   const cart = await newCart.save();
   res.status(201).json(new SuccessResponse(201, cart));
 });
+
+// Get item cart by idUser
 exports.getCartByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;
   const cart = await Cart.find({ idUser }).catch(
@@ -17,6 +20,8 @@ exports.getCartByIdUser = asyncMiddleware(async (req, res, next) => {
   );
   if (cart) res.status(200).json(new SuccessResponse(200, cart));
 });
+
+// Get total count item cart by idUser
 exports.getTotalCountByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;
   const cart = await Cart.find({ idUser }).catch(
@@ -39,6 +44,7 @@ exports.updateCartByIdUser = asyncMiddleware(async (req, res, next) => {
   if (!updateCart) return next(new ErrorResponse(400, "can not update"));
   res.status(200).json(new SuccessResponse(200, updateCart));
 });
+
 //xóa cart theo id user
 exports.deleteCartByIdUser = asyncMiddleware(async (req, res, next) => {
   const { idUser } = req.body;

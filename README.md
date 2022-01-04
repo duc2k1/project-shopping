@@ -1,5 +1,19 @@
-#do-an-nodejs
+# Do-an-nodejs
+
+## Install/Update dependencies/packages
+
+```
+npm install
+```
+
+## Run/start app/server
+
+```
+npm run start
+```
+
 ## Features
+
 - Auth: Register (password used bcrypt), login, forget password
 - User: Update password, get all users, active user by name, get/delete/update by id
 - Role: Create new role, get all roles
@@ -11,9 +25,13 @@
 - Promotion: Get all promotions, add promotion, get/delete/update promotion by product id
 - Feedback: Get/delte/update feedback by user id and product id
 - Pay: Pay by price (pay used PayPal)
+
 ## Database
+
 - MongoDb
+
 ## Libaries
+
 - bcryptjs
 - dotenv
 - express
